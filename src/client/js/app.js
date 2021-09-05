@@ -46,19 +46,21 @@ const postData = async ( url = '', data = {}) => {
 // }
 
 
-function handleSubmit() {
+function handleSubmit(event) {
+    event.preventDefault();
+
     console.log("Submit button pressed");
     const place = document.getElementById("place").value;
-    // const startDate = new Date(document.getElementById("start").value);
-    // const endDate = new Date(document.getElementById("end").value);
-    // postData('/weather', {'place': place, 'tripDate': startDate})
-    // .then(weather => {
-    //     console.log(weather);
-    //     updateUI(JSON.stringify(weather));
-    // });
+    const startDate = new Date(document.getElementById("start").value);
+    const endDate = new Date(document.getElementById("end").value);
+    postData('/weather', {'place': place, 'tripDate': startDate})
+    .then(weather => {
+        console.log(weather);
+        updateUI(JSON.stringify(weather));
+    });
     postData('/image', {'place': place})
     .then(data => {
-        imageUrl = data.hits[0].largeImageURL;
+        const imageUrl = data.hits[0].largeImageURL;
         // console.log(imageUlr);
         console.log(imageUrl);
         updateImage(imageUrl);
@@ -97,3 +99,6 @@ function handleSubmit() {
 
 
 // postData('/add', {answer:42});
+export {
+    handleSubmit
+};

@@ -1,0 +1,10 @@
+import "regenerator-runtime/runtime";
+
+import { handleSubmit } from './js/app.js';
+
+
+console.log("read me");
+const submitButton = document.getElementById("generate");
+submitButton.addEventListener('click', handleSubmit);
+
+export { handleSubmit }
