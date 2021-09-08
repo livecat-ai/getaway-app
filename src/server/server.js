@@ -37,6 +37,10 @@ function listening() {
 
 let appData = [];
 
+app.get('/', function (req, rest) {
+    res.sendFile('dist/index.html')
+})
+
 app.post('/weather', function (req, res) {
     const tripDate = new Date(req.body.tripDate);
     const info = {};

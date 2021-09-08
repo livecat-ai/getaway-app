@@ -1,10 +1,27 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const {CleanWebpackPlugin} = require('clean-webpack-plugin')
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const { webpack } = require('webpack');
 
 module.exports = {
     mode: 'development',
-    devtool: 'source-map',
+    devtool: 'inline-source-map',
+    watchOptions: {
+        poll: true,
+        ignored: "/node_modules/"
+    },
+    devServer: {
+        port: 8080,
+        open: true,
+        proxy: {
+            '/': {
+                target: 'http://localhost:3000/',
+                secure: false,
+                changeOrigin: true
+            }
+        },
+        
+    },
     entry: {
         main: path.resolve(__dirname, './src/client/index.js'),
     },
@@ -30,9 +47,5 @@ module.exports = {
             },
         ],
     },
-    devServer: {
-        contentBase: path.join(__dirname, "./dist"),
-        compress: true,
-        port: 8080,
-    },
+    
 };
