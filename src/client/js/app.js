@@ -1,8 +1,16 @@
 // const { default: fetch } = require("node-fetch");
 
-function updateUI(data) {
-    const weather = document.getElementById("weather");
-    weather.innerHTML = data;
+function updateUI(jsonData) {
+    const location = document.getElementById('location-info');
+    const weather = document.getElementById("weather-info");
+    const data = JSON.parse(jsonData);
+    const locationText = `Your trip to ${data['place']}
+                          is in ${data['daysToTrip']} days!!`;
+    const weatherText = `The weather in ${data['place']}
+                            is ${data['temperature']} Degrees
+                            with ${data['description']}`;
+    location.innerHTML = locationText;
+    weather.innerHTML = weatherText;
 }
 
 function updateImage(data) {
@@ -50,9 +58,9 @@ function handleSubmit(event) {
     event.preventDefault();
 
     console.log("Submit button pressed");
-    const place = document.getElementById("place").value;
+    const place = document.getElementById("destination").value;
     const startDate = new Date(document.getElementById("start").value);
-    const endDate = new Date(document.getElementById("end").value);
+    // const endDate = new Date(document.getElementById("end").value);
     postData('/weather', {'place': place, 'tripDate': startDate})
     .then(weather => {
         console.log(weather);

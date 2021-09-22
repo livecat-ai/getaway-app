@@ -45,6 +45,11 @@ module.exports = {
                 exclude: /node_modules/,
                 use: ['babel-loader'],
             },
+            // CSS and SASS
+            {
+                test: /\.(scss|css)$/,
+                use: ['style-loader', 'css-loader', 'sass-loader' ],
+            },
         ],
     },
     
