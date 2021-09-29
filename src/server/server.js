@@ -62,7 +62,7 @@ app.post('/weather', function (req, res) {
         info.temperature = data.data[0].temp;
         info.description = data.data[0].weather.description;
         // appData.push(info);
-        console.log(info);
+        // console.log(info);
         res.send(info);
     })
 });

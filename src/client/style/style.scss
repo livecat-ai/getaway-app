@@ -60,11 +60,14 @@ header > h1 {
     margin: 3%;
 }
 
+// label {
+//     display: flex;
+//     flex-direction: row;
+//     width: 90px;
+//     color: $dark-text;
+// }
 label {
-    display: flex;
-    flex-direction: row;
     width: 90px;
-    color: $dark-text;
 }
 
 
@@ -146,17 +149,16 @@ footer {
 
 @media (orientation: landscape) and (max-height: 700px) {
 
-
     #container {
-        height: 200vh;
+        height: 185vh;
         grid-template-columns: repeat(8, 1fr);
-        grid-template-rows: 20vh 40vh 112vh 10vh;
+        grid-template-rows: 20vh 45vh 105vh 10vh;
         grid-gap: 1vh;
-        grid-template-areas:
-            "hd hd hd hd hd hd hd hd"
-            "in in in in in in in in"
-            "vw vw vw vw vw vw vw vw"
-            "ft ft ft ft ft ft ft ft";
+        // grid-template-areas:
+        //     "hd hd hd hd hd hd hd hd"
+        //     "in in in in in in in in"
+        //     "vw vw vw vw vw vw vw vw"
+        //     "ft ft ft ft ft ft ft ft";
     }
 
     #view {
@@ -215,6 +217,12 @@ footer {
         justify-content: space-evenly;
     }
 
+    label {
+        width: auto;
+        padding: 1%;
+        padding-right: 5px;
+    }
+
     button {
         width: 150px;
     }
@@ -268,7 +276,7 @@ footer {
 
     label {
         width: auto;
-        margin-right: 5%;
+        margin-right: 5px;
     }
 
     input {

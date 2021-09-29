@@ -4,7 +4,7 @@ function updateUI(jsonData) {
     const location = document.getElementById('location-info');
     const weather = document.getElementById("weather-info");
     const data = JSON.parse(jsonData);
-    const locationText = `Your trip to ${data['place']}
+    const locationText = `Your trip to ${data['place']}, ${data['country']} 
                           is in ${data['daysToTrip']} days!!`;
     const weatherText = `The weather in ${data['place']}
                             is ${data['temperature']} Degrees
@@ -19,7 +19,7 @@ function updateImage(data) {
 }
 
 const postData = async ( url = '', data = {}) => {
-    console.log(data);
+    // console.log(data);
     const response = await fetch(url, {
         method: 'POST',
         credentials: 'same-origin',
@@ -39,20 +39,21 @@ const postData = async ( url = '', data = {}) => {
     }
 }
 
-// function dateDelta(startDate, endDate) {
-//     const delta = endDate.getTime() - startDate.getTime();
-//     const minutes = Math.floor(delta / 60000);
-//     const hours = Math.round(minutes / 60);
-//     const days = Math.round(hours / 24);
-//     return days
-// };
-
-// function dateToWeatherbitFormat(date) {
-//     const month = date.getMonth() + 1;
-//     const day = date.getDate();
-//     return `${date.getMonth()}-${date.getDate()}`;
-// }
-
+function getImage(place, country) {
+    postData('/image', {'place': place})
+    .then(data => {
+        const imageUrl = data.hits[0].largeImageURL;
+        // console.log(imageUlr);
+        console.log(imageUrl);
+        updateImage(imageUrl);
+    })
+    .catch(error => {
+        console.log("in Image Error");
+        console.log(error.body);
+        console.log
+        getImage(country);
+    });
+}
 
 function handleSubmit(event) {
     event.preventDefault();
@@ -63,50 +64,17 @@ function handleSubmit(event) {
     // const endDate = new Date(document.getElementById("end").value);
     postData('/weather', {'place': place, 'tripDate': startDate})
     .then(weather => {
-        console.log(weather);
+        // console.log(weather);
         updateUI(JSON.stringify(weather));
-    });
-    postData('/image', {'place': place})
-    .then(data => {
-        const imageUrl = data.hits[0].largeImageURL;
-        // console.log(imageUlr);
-        console.log(imageUrl);
-        updateImage(imageUrl);
+        // country = data['country'];
+        return weather;
+    })
+    .then(weather => {
+        // console.log(weather);
+        getImage(place, weather['country']);
     });
 };
 
-//     postData('/gps', {'place': place})
-//     // const body = {"place":place, 
-//     //               "start":dateToWeatherbitFormat(startDate),
-//     //               "end":dateToWeatherbitFormat(endDate)
-//     // };
-//     // const body = {"place":place, 
-//     //               "start":startDate,
-//     //               "end":endDate };
-//     // // const body = {"place":place};
-//     // postData('/add', body)                 
-//     .then(data => {
-//         const details = data.geonames[0];
-//         const country = details.countryName;
-//         const lat = details.lat;
-//         const lon = details.lng;
-//         console.log(data.geonames[0]);
-//         postData('/weather', {'lat':lat, 'lon':lon})
-//         .then(data => {
-//             console.log(data);
-//             const temp = data.data;
-//             // updateUI(temp);
-//             updateUI(JSON.stringify(data.data));
-//         })
-//         // updateUI(JSON.stringify(data.geonames[0]));
-//     });
-// }
-
-
-
-
-
-// postData('/add', {answer:42});
 export {
     handleSubmit
 };
