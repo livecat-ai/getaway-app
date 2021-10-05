@@ -113,7 +113,8 @@ const getData = async(url) => {
 function gpsFromPlacenameUrl(placeName) {
     // Use Geonames to get gps coords for a given a
     // place name and a country code
-    const username = process.env.GEONAMES_USER;
+    // const username = process.env.GEONAMES_USER;
+    const username = "livecat";
     const baseUrl = "http://api.geonames.org/searchJSON?";
     const placeUrl = "q=" + placeName;
     const userUrl = "&username=" + username;
@@ -129,7 +130,8 @@ function getGpsFromPlaceName(placeName) {
 // Get the current weather at a given GPS coord
 // ############################################
 function currentWeatherUrl(lat, lon) {
-    const api_key = process.env.WEATHERBIT_KEY;
+    // const api_key = process.env.WEATHERBIT_KEY;
+    const api_key = "c80fa9cb65a6496da87b7ddf658498d3";
     const baseUrl = "https://api.weatherbit.io/v2.0/current";
     return `${baseUrl}?lat=${lat}&lon=${lon}&key=${api_key}`;
 }
@@ -143,7 +145,8 @@ function getCurrentWeather(lat, lon) {
 // Get an image of a location given a placename
 // ############################################
 function imageFromPlaceNameUrl(placeName) {
-    const apiKey = process.env.PIXABAY_KEY;
+    // const apiKey = process.env.PIXABAY_KEY;
+    const apiKey = "23143916-7f349d523619fd3a0d4aaccb2";
     const baseUrl = "https://pixabay.com/api/";
     return `${baseUrl}?key=${apiKey}&q=${placeName}&image_type=photo`;
 }
