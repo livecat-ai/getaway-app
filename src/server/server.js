@@ -1,5 +1,8 @@
 // import dotenv to access local .env variables
 require('dotenv').config();
+const dateUtils = require('./dateUtils');
+
+// import { daysToTrip } from './dateUtils';
 
 // Import fetch
 const fetch = require('node-fetch');
@@ -30,12 +33,7 @@ function listening() {
     console.log(`running on localhost: ${port}`);
 };
 
-// app.get('/', function (req, res) {
-//     console.log('in root');
-//     res.send("hello world");
-// });
-
-let appData = [];
+// let appData = [];
 
 app.get('/', function (req, rest) {
     res.sendFile('dist/index.html')
@@ -46,24 +44,43 @@ app.post('/weather', function (req, res) {
     const info = {};
 
     info.place = req.body.place;
-    info.daysToTrip = daysToTrip(tripDate);
+    info.daysToTrip = dateUtils.daysToTrip(tripDate);
     info.tripDate = tripDate.getTime();
 
     console.log(`requesting gps coords for: ${info.place}`);
     getGpsFromPlaceName(info.place)
     .then(data => {
-        info.lat = data.geonames[0].lat;
-        info.lon = data.geonames[0].lng;
-        info.country = data.geonames[0].countryName;
-        // console.log(info);
-        return getForcastWeather(info.lat, info.lon)
+        try {
+            info.lat = data.geonames[0].lat;
+            info.lon = data.geonames[0].lng;
+            info.country = data.geonames[0].countryName;
+            // console.log(info);
+            if (info.daysToTrip <= 7) {
+                return getCurrentWeather(info.lat, info.lon);
+            }
+            else {
+                return getForcastWeather(info.lat, info.lon);
+                // return getCurrentWeather(info.lat, info.lon);
+            }
+            
+        }
+        catch(error) {
+            console.log(error);
+        }
     })
     .then(data => {
-        info.temperature = data.data[0].temp;
-        info.description = data.data[0].weather.description;
-        // appData.push(info);
-        // console.log(info);
-        res.send(info);
+        try {
+            info.temperature = data.data[0].temp;
+            info.description = data.data[0].weather.description;
+            // appData.push(info);
+            // console.log(info);
+            info.success = true;
+            res.send(info);
+        }
+        catch(error) {
+            console.log(error);
+            res.send({"success":false, "message": "place not found"});
+        }
     })
 });
 
@@ -71,7 +88,7 @@ app.post('/image', function (req, res) {
     const place = req.body.place;
     getImageFromPlaceName(place)
     .then(data => {
-        console.log(data);
+        // console.log(data);
         res.send(data);
     })
 })
@@ -80,13 +97,19 @@ const getData = async(url) => {
     const res = await fetch(url);
     try {
         const data = await res.json();
+        // console.log(data);
         return data;
     }
     catch(error) {
+        console.log("In Server Error");
         console.log("error", error);
     }
 }
 
+
+// ####################################
+// Get GPS data
+// ####################################
 function gpsFromPlacenameUrl(placeName) {
     // Use Geonames to get gps coords for a given a
     // place name and a country code
@@ -102,17 +125,23 @@ function getGpsFromPlaceName(placeName) {
     return getData(url);
 }
 
-function forcastWeatherUrl(lat, lon) {
+// ############################################
+// Get the current weather at a given GPS coord
+// ############################################
+function currentWeatherUrl(lat, lon) {
     const api_key = process.env.WEATHERBIT_KEY;
     const baseUrl = "https://api.weatherbit.io/v2.0/current";
     return `${baseUrl}?lat=${lat}&lon=${lon}&key=${api_key}`;
 }
 
-function getForcastWeather(lat, lon) {
-    const url = forcastWeatherUrl(lat, lon);
+function getCurrentWeather(lat, lon) {
+    const url = currentWeatherUrl(lat, lon);
     return getData(url);
 }
 
+// ############################################
+// Get an image of a location given a placename
+// ############################################
 function imageFromPlaceNameUrl(placeName) {
     const apiKey = process.env.PIXABAY_KEY;
     const baseUrl = "https://pixabay.com/api/";
@@ -124,23 +153,16 @@ function getImageFromPlaceName(placeName) {
     return getData(url);
 }
 
-const getAverageWeather = async (lat, lon, startDate, endDate) => {
-    const api_key = process.env.WEATHERBIT_KEY;
-    const baseUrl = "https://api.weatherbit.io/v2.0/normals";
-    const searchUrl = `${baseUrl}?lat=${lat}&lon=${lon}`
-                     + `&start_day=${startDate}`
-                     + `&end_day=${endDate}&tp=monthly&key=${api_key}`;
-    console.log(`fetching: ${searchUrl}`);
-    const res = await fetch(searchUrl);
-    try {
-        const data = await res.json();
-        console.log(data);
-        return data;
-    }
-    catch(error) {
-        console.log("error", error);
-    }
+// ############################################
+// Get the forcast weather at a given GPS coord
+// ############################################
+function getForcastWeather(lat, lon) {
+    const apiKey = process.env.WEATHERBIT_KEY;
+    const baseUrl = "https://api.weatherbit.io/v2.0/forecast/daily"
+    const searchUrl = `${baseUrl}?lat=${lat}&lon=${lon}&key=${apiKey}`
+    return getData(searchUrl);
 }
+
 
 function dateToWeatherbitFormat(date) {
     const month = date.getMonth() + 1;
@@ -148,17 +170,18 @@ function dateToWeatherbitFormat(date) {
     return `${date.getMonth()}-${date.getDate()}`;
 }
 
-function daysToTrip(tripDate) {
-    const now = new Date(Date.now());
-    const days = dateDeltaInDays(now, tripDate);
-    console.log(days);
-    return days;
-}
+// function daysToTrip(tripDate) {
+//     const now = new Date(Date.now());
+//     const days = dateDeltaInDays(now, tripDate);
+//     console.log(days);
+//     return days;
+// };
 
 function dateDeltaInDays(startDate, endDate) {
     const delta = endDate.getTime() - startDate.getTime();
     const minutes = Math.floor(delta / 60000);
     const hours = Math.round(minutes / 60);
-    const days = Math.round(hours / 24);
+    const days = Math.round(hours / 24)+1;
     return days
 };
+

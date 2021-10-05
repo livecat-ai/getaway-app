@@ -1,8 +1,11 @@
-$site-grey: rgb(77, 83, 87);
-$lite-text: rgb(235, 235, 235);
+$dark-grey: rgb(77, 83, 87);
+$lite-grey: rgb(235, 235, 235);
 $site-blue: rgb(140,204,201);
 $dark-text: rgb(40, 75, 73);
 $button-blue: rgba(94, 187, 182, 1);
+$button-blue-hover: rgb(55, 185, 177);
+$input: rgb(212, 235, 233);
+$input-hover: rgb(167, 231, 226);
 
 * {
     border: 0;
@@ -12,7 +15,7 @@ $button-blue: rgba(94, 187, 182, 1);
 }
 
 body {
-    background-color: rgb(235, 235, 235);
+    background-color: $lite-grey;
     font-family: Roboto, Geneva, Tahoma, sans-serif;
 }
 
@@ -35,8 +38,8 @@ body {
 
 header {
     grid-area: hd;
-    background-color: $site-grey;
-    color: $lite-text;
+    background-color: $dark-grey;
+    color: $lite-grey;
     font-size: 1.5em;
     display: flex;
     justify-content: center;
@@ -77,7 +80,11 @@ input {
     border-radius: 5px;
     height: 20px;
     margin: 1%;
-    background-color: rgb(212, 235, 233);
+    background-color: $input;
+}
+
+input:hover {
+    background-color: $input-hover;
 }
 
 button {
@@ -88,6 +95,10 @@ button {
     background-color: $button-blue;
     border-radius: 10px;
     // box-shadow: 3px 5px 10px rgba(40, 75, 73, 0.25);;
+}
+
+button:hover {
+    background-color: $button-blue-hover;
 }
 
 
@@ -133,13 +144,13 @@ button {
 // ******************
 footer {
     grid-area: ft;
-    background-color: $site-grey;
+    background-color: $dark-grey;
     // border: 2px solid purple;
 }
 
 #credit {
     font-size: 0.2em;
-    color: $lite-text;
+    color: $lite-grey;
 }
 
 
@@ -293,7 +304,7 @@ footer {
 
     #credit {
         font-size: .5em;
-        color: $lite-text;
+        color: $lite-grey;
     }
 
 }
@@ -332,7 +343,7 @@ footer {
 
     #credit {
         font-size: .5em;
-        color: $lite-text;
+        color: $lite-grey;
     }
 
 }

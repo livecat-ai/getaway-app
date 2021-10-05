@@ -1,4 +1,5 @@
 // const { default: fetch } = require("node-fetch");
+import { isDateValid } from "./isDateValid";
 
 function updateUI(jsonData) {
     const location = document.getElementById('location-info');
@@ -15,7 +16,9 @@ function updateUI(jsonData) {
 
 function updateImage(data) {
     const imageId = document.getElementById("image");
-    imageId.src = data;
+    imageId.src = data.image;
+    // console.log(data);
+    imageId.alt = `Image of ${data.tags}`;
 }
 
 const postData = async ( url = '', data = {}) => {
@@ -39,18 +42,17 @@ const postData = async ( url = '', data = {}) => {
     }
 }
 
-function getImage(place, country) {
+function getImage(place = "", country = "") {
     postData('/image', {'place': place})
     .then(data => {
         const imageUrl = data.hits[0].largeImageURL;
-        // console.log(imageUlr);
-        console.log(imageUrl);
-        updateImage(imageUrl);
+        const tags = data.hits[0].tags;
+        // console.log(imageUrl);
+        updateImage({"image":imageUrl, "tags":tags});
     })
     .catch(error => {
         console.log("in Image Error");
         console.log(error.body);
-        console.log
         getImage(country);
     });
 }
@@ -64,16 +66,38 @@ function handleSubmit(event) {
     // const endDate = new Date(document.getElementById("end").value);
     postData('/weather', {'place': place, 'tripDate': startDate})
     .then(weather => {
-        // console.log(weather);
-        updateUI(JSON.stringify(weather));
-        // country = data['country'];
-        return weather;
+        while (!isDateValid(startDate)) {
+            alert("Date must be later than today! Please try again.");
+            startDate = new Date(document.getElementById("start").value);
+        }
+        if (weather.success === true) {
+            console.log(weather);
+            updateUI(JSON.stringify(weather));
+            return weather;
+        }
+        else if (weather.success == false) {
+            // alert("The place you entered does not exist! Please try again.");
+            console.log(weather);
+        }
     })
     .then(weather => {
         // console.log(weather);
         getImage(place, weather['country']);
-    });
+    })
+    .catch(error => {
+        console.log(error.message);
+    })
 };
+
+// function isDateValid(date) {
+//     // Check that the date is not in the past
+//     const now = Date.now();
+//     if ((date - now) >= 0) {
+//         return true;
+//     }
+//     else {
+//         return false;
+//     }
 
 export {
     handleSubmit

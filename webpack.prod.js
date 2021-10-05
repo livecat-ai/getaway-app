@@ -2,6 +2,13 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const WorkboxPlugin = require("workbox-webpack-plugin");
+
+// import 'path';
+// import HtmlWebpackPlugin from 'html-webpack-plugin';
+// import CleanWebpackPlugin from 'clean-webpack-plugin';
+// import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+// import WorkboxPlugin from 'workbox-webpack-plugin';
 
 
 module.exports = {
@@ -21,6 +28,7 @@ module.exports = {
         }),
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin(),
+        new WorkboxPlugin.GenerateSW(),
     ],
     module: {
         rules: [
