@@ -16,7 +16,9 @@ In order to give you the information on your trip; Getaway requests infomation f
     * Pixabay - Will give us an image of our destination.
 
 ## Running the app
-From the project directory, type >> npm start 
+To build the project, go to the project directory and type >> npm run build-prod
+
+Then, from the project directory, type >> npm start 
 This will start the server on localhost:3000
 
-You can then navigate to localhost:3000 in a web browser.
+You can then navigate to localhost:3000 in a web browser to see the app.

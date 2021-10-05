@@ -1,10 +1,10 @@
-$dark-grey: rgb(77, 83, 87);
-$lite-grey: rgb(235, 235, 235);
-$site-blue: rgb(140,204,201);
-$dark-text: rgb(40, 75, 73);
-$button-blue: rgba(94, 187, 182, 1);
-$button-blue-hover: rgb(55, 185, 177);
-$input: rgb(212, 235, 233);
+$header-bg: rgb(77, 83, 87);
+$header-text: rgb(235, 235, 235);
+$body-bg: rgb(140,204,201);
+$body-text: rgb(40, 75, 73);
+$button-default: rgba(94, 187, 182, 1);
+$button-hover: rgb(55, 185, 177);
+$input-default: rgb(212, 235, 233);
 $input-hover: rgb(167, 231, 226);
 
 * {
@@ -15,11 +15,11 @@ $input-hover: rgb(167, 231, 226);
 }
 
 body {
-    background-color: $lite-grey;
+    background-color: $header-text;
     font-family: Roboto, Geneva, Tahoma, sans-serif;
 }
 
-#container {
+.container {
     margin: auto;
     margin-top: 2vh;
     display:grid;
@@ -38,8 +38,8 @@ body {
 
 header {
     grid-area: hd;
-    background-color: $dark-grey;
-    color: $lite-grey;
+    background-color: $header-bg;
+    color: $header-text;
     font-size: 1.5em;
     display: flex;
     justify-content: center;
@@ -52,9 +52,9 @@ header > h1 {
 }
 
 
-#input-container {
+.input-container {
     grid-area: in;
-    background-color: $site-blue;
+    background-color: $body-bg;
     // border: 2px solid blue;
 }
 
@@ -63,24 +63,16 @@ header > h1 {
     margin: 3%;
 }
 
-// label {
-//     display: flex;
-//     flex-direction: row;
-//     width: 90px;
-//     color: $dark-text;
-// }
 label {
     width: 90px;
 }
-
-
 
 input {
     border: 0;
     border-radius: 5px;
     height: 20px;
     margin: 1%;
-    background-color: $input;
+    background-color: $input-default;
 }
 
 input:hover {
@@ -91,21 +83,21 @@ button {
     border: none;
     width: 100%;
     height: 25px;
-    color: $dark-text;
-    background-color: $button-blue;
+    color: $body-text;
+    background-color: $button-default;
     border-radius: 10px;
     // box-shadow: 3px 5px 10px rgba(40, 75, 73, 0.25);;
 }
 
 button:hover {
-    background-color: $button-blue-hover;
+    background-color: $button-hover;
 }
 
 
 // ****************************
 // Information window and Image
 // ****************************
-#view {
+.view {
     grid-area: vw;
     display: flex;
     flex-direction: column;
@@ -114,25 +106,25 @@ button:hover {
     // border: 2px solid green;
 }
 
-#weather {
+.weather {
     margin-bottom: 2%;
     height: 100%;
     width: 100%;
-    color:$dark-text;
-    background-color: $site-blue;
+    color:$body-text;
+    background-color: $body-bg;
     // border: 2px solid turquoise;
 
 }
 
-#weather > p {
+.weather > p {
     margin: 2%;
 }
 
-#weather > h3 {
+.weather > h3 {
     margin: 2%;
 }
 
-#image {
+img {
     height: auto;
     max-height: 65%;
     width: 100%;
@@ -144,13 +136,13 @@ button:hover {
 // ******************
 footer {
     grid-area: ft;
-    background-color: $dark-grey;
+    background-color: $header-bg;
     // border: 2px solid purple;
 }
 
-#credit {
+.credit {
     font-size: 0.2em;
-    color: $lite-grey;
+    color: $header-text;
 }
 
 
@@ -160,7 +152,7 @@ footer {
 
 @media (orientation: landscape) and (max-height: 700px) {
 
-    #container {
+    .container {
         height: 185vh;
         grid-template-columns: repeat(8, 1fr);
         grid-template-rows: 20vh 45vh 105vh 10vh;
@@ -172,7 +164,7 @@ footer {
         //     "ft ft ft ft ft ft ft ft";
     }
 
-    #view {
+    .view {
         grid-area: vw;
         display: flex;
         flex-direction: row;
@@ -181,28 +173,28 @@ footer {
         // border: 2px solid green;
     }
 
-    #weather {
+    .weather {
         margin-bottom: 2%;
         margin-right: 1%;
         height: 100%;
         width: 20%;
-        color:$dark-text;
-        background-color: $site-blue;
+        color:$body-text;
+        background-color: $body-bg;
         // border: 2px solid turquoise;
 
     }
 
-    #weather > p {
+    .weather > p {
         margin: 2%;
         margin-bottom: 10%;
     }
 
-    #weather > h3 {
+    .weather > h3 {
         margin: 2%;
         margin-bottom: 10%;
     }
 
-    #image {
+    img {
         height: auto;
         max-height: 100%;
         width: 80%;
@@ -217,7 +209,7 @@ footer {
 
 @media (orientation: landscape) and (min-height: 701px) {
 
-    #container {
+    .container {
         grid-template-rows: 10vh 10vh 65vh 5vh;
     }
 
@@ -238,7 +230,7 @@ footer {
         width: 150px;
     }
 
-    #view {
+    .view {
         grid-area: vw;
         display: flex;
         flex-direction: row;
@@ -247,28 +239,28 @@ footer {
         // border: 2px solid green;
     }
 
-    #weather {
+    .weather {
         margin-bottom: 2%;
         margin-right: 1%;
         height: 100%;
         width: 20%;
-        color:$dark-text;
-        background-color: $site-blue;
+        color:$body-text;
+        background-color: $body-bg;
         // border: 2px solid turquoise;
 
     }
 
-    #weather > p {
+    .weather > p {
         margin: 2%;
         margin-bottom: 15%;
     }
 
-    #weather > h3 {
+    .weather > h3 {
         margin: 2%;
         margin-bottom: 15%;
     }
 
-    #image {
+    img {
         height: auto;
         max-height: 100%;
         width: 80%;
@@ -297,14 +289,14 @@ footer {
     }
 
     button {
-        font-size: .8em;
+        font-size: 0.8em;
         height: 40px;
         width: 180px;
     }
 
-    #credit {
+    .credit {
         font-size: .5em;
-        color: $lite-grey;
+        color: $header-text;
     }
 
 }
@@ -341,9 +333,9 @@ footer {
         height: 40px;
     }
 
-    #credit {
-        font-size: .5em;
-        color: $lite-grey;
+    .credit {
+        font-size: 0.5em;
+        color: $header-text;
     }
 
 }
